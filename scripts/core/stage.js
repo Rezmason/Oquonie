@@ -39,7 +39,7 @@ function Stage()
     oquonie.player.move_at(x,y);
     
     var numPillars = oquonie.spellbook.pillars.length;
-    var theme = (numPillars >= 5 && this.room.theme != "pillars") ? "black" : this.room.theme;
+    var theme = (numPillars >= 5 && this.room.theme == "white") ? "black" : this.room.theme;
 
     oquonie.stage.set_theme(theme);
 
@@ -130,7 +130,7 @@ function Stage()
   {
     oquonie.element.setAttribute("class",theme);
 
-    $(this.room.element).css("z-index", (theme == "pillars" ? 1000 : 3000))
+    $(this.room.element).css("z-index", (theme == "pillars" || theme == "finale" ? 1000 : 3000))
   }
 
   //
