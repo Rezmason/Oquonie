@@ -9,10 +9,10 @@ function Overlay()
     oquonie.element.appendChild(this.element);
   }  
 
-  this.show = function(message)
+  this.show = function(message, color="white")
   {
     oquonie.artbook.set_art(this.element,"media/graphics/plan/"+message+".png");
-    $(this.element).animate({ opacity:1 }, oquonie.speed);
+    $(this.element).css("background-color", color).animate({ opacity:1 }, oquonie.speed);
 
     this.content = message;
   }
