@@ -80,4 +80,10 @@ function Oquonie()
     clearTimeout(this.animation_timer);
   }
 
+  this.set_speed = function(value)
+  {
+    this.speed = Math.min(300, Math.max(50, value));
+    console.log("Speed:", this.speed);
+  }
+
 }

@@ -29,13 +29,15 @@ function Stage()
     $(this.parallax_under).finish();
     oquonie.player.stand_by_door(x,y);
 
-    if(this.room){ $(this.room.element).empty(); $(this.room.element).remove(); }
+    if (this.room == null || this.room.id != room_id) {
+      if(this.room){ $(this.room.element).empty(); $(this.room.element).remove(); }
 
-    this.room = oquonie.world.rooms[room_id];
-    this.element.appendChild(this.room.element);
-    this.room.show();
-    this.room.is_known = true;
-    oquonie.player.location = room_id;
+      this.room = oquonie.world.rooms[room_id];
+      this.element.appendChild(this.room.element);
+      this.room.show();
+      this.room.is_known = true;
+      oquonie.player.location = room_id;
+    }
 
     oquonie.player.move_at(x,y);
     
@@ -111,6 +113,11 @@ function Stage()
 
   this.animate = function(x,y)
   {
+    if (!this.room.parallax) {
+      this.center(0,0);
+      return;
+    }
+
     var xSlant = x - y;
     var ySlant = -x - y;
     $(this.element).transition({ marginLeft: (xSlant * 0.5)+"%",marginTop: (ySlant * 0.5)+"%" }, oquonie.speed);
@@ -120,6 +127,11 @@ function Stage()
 
   this.center = function(x,y)
   {
+    if (!this.room.parallax) {
+      x = 0;
+      y = 0;
+    }
+
     var xSlant = x - y;
     var ySlant = -x - y;
     $(this.element).css("margin-left",(xSlant * 0.5)+"%").css("margin-top",(ySlant * 0.5)+"%");

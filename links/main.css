@@ -18,6 +18,7 @@ spellbook spell { width:8vw; height:8vw; max-width:8vh; max-height: 8vh; margin-
 oquonie.white { background-color:white; }
 oquonie.black { background-color:black; }
 oquonie.pillars { background-color:lightgrey; }
+oquonie.settings { background-color:grey; }
 oquonie.hiversaires { background-color:lightgrey; }
 oquonie.tear { background-color:lightgrey; }
 

@@ -4,6 +4,7 @@ function Music()
   this.track_effect = new Audio();
   this.track_interface = new Audio();
   this.track_dialog = new Audio();
+  this.volume = 1;
 
   this.audio_catalog = {};
 
@@ -13,6 +14,7 @@ function Music()
   {
     console.log("Effect: ",name);
     this.track_effect = this.fetch_audio(name, "effect", "media/audio/effect/"+name+".ogg");
+    this.track_effect.volume = this.volume;
     this.track_effect.play()
   }
 
@@ -20,6 +22,7 @@ function Music()
   {
     console.log("Interface: ",name);
     this.track_interface = this.fetch_audio(name, "interface", "media/audio/interface/"+name+".ogg");
+    this.track_interface.volume = this.volume;
     this.track_interface.play()
   }
 
@@ -27,6 +30,7 @@ function Music()
   {
     console.log("Dialog: ",name);
     this.track_dialog = this.fetch_audio(name, "dialog", "media/audio/dialog/"+name+".ogg");
+    this.track_dialog.volume = this.volume;
     this.track_dialog.play();
   }
 
@@ -36,14 +40,24 @@ function Music()
     if(DEBUG){ return; }
 
     // Fadeout
+    var volume = this.volume;
     $(this.track_ambient).animate({volume: 0}, 1000, function(){
       console.log("Music: ",name);
 
       oquonie.music.track_ambient.pause();
       oquonie.music.track_ambient = oquonie.music.fetch_audio(name, "ambient", "media/audio/ambient/"+name+".mp3", true);
       if(oquonie.music.is_muted == false){ oquonie.music.track_ambient.play(); }
-      $(oquonie.music.track_ambient).animate({volume: 1}, 1000);
+      $(oquonie.music.track_ambient).animate({volume: volume}, 1000);
     });
+  }
+
+  this.set_volume = function(value)
+  {
+    this.volume = Math.min(1, Math.max(0, value));
+    if (this.track_ambient != null) { this.track_ambient.volume = this.volume; }
+    if (this.track_effect != null) { this.track_effect.volume = this.volume; }
+    if (this.track_interface != null) { this.track_interface.volume = this.volume; }
+    if (this.track_dialog != null) { this.track_dialog.volume = this.volume; }
   }
 
   this.fetch_audio = function(name, role, src, loop = false)

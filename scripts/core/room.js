@@ -10,6 +10,7 @@ function Room(id)
   this.audio = null;
   this.theme = null;
   this.events = [];
+  this.parallax = true;
 
   this.add_event = function(event,is_mirrored = false)
   {

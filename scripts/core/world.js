@@ -12,6 +12,7 @@ function World()
     this.createNemedique();
     this.createNastazie();
     this.createSecrets();
+    this.createSettings();
   }
   
   this.createLobby = function()
@@ -59,9 +60,9 @@ function World()
     this.rooms[3] = room
     
     room = new Room(4);
-    room.floors = [ 1,1,1, 1,5,6, 1,6,1 ];
+    room.floors = [ 1,1,1, 4,5,6, 1,6,1 ];
     room.walls  = [ 26,14,26,1,12,1 ];
-    room.steps  = [ 0,0,0, 0,7,0 ];
+    room.steps  = [ 0,7,0, 0,7,0 ];
     room.audio  = "lobby";
     room.theme  = "white";
     room.add_event(new Blocker(1,1,9));
@@ -70,6 +71,7 @@ function World()
     room.add_event(new Door(0,2,14,0,-1));
     room.add_event(new Door(2,0,3,-1,0));
     room.add_event(new Door(0,-2,5,0,1));
+    room.add_event(new Door(-2,0,200,1,0));
     this.rooms[4] = room;
     
     room = new Room(5);
@@ -1464,5 +1466,40 @@ function World()
     room.add_event(new Credit(1,0,"daniel", ["confusion1","confusion3","confusion2"]))
     room.add_event(new Door(-2,0,155,1,0))
     this.rooms[156] = room
+  }
+
+  this.createSettings = function()
+  {
+    var room;
+
+    room = new Room(200);
+    room.floors = [ 16,0,16, 30,1,30, 19,0,19 ]
+    room.walls  = [ 11,0,11, 25,13,25 ]
+    room.steps  = [ 0,0,0, 2,0,2 ]
+    room.audio  = "play"
+    room.theme  = "settings"
+    room.parallax = false;
+    room.add_event(new Door(2,0,4,-1,0))
+
+    // Right door set - audio volume
+    room.add_event(new SettingsDoor(1,2,200,1,-1,function() { 
+        // oquonie.dialog.show("disc",["inside","correct","sound"], null, "disc_on");
+        oquonie.music.set_volume(oquonie.music.volume * 2);
+    }))
+    room.add_event(new SettingsDoor(1,-2,200,1,1,function() { 
+        // oquonie.dialog.show("disc",["inside","incorrect","sound"], null, "disc_on");
+        oquonie.music.set_volume(oquonie.music.volume / 2);
+    }))
+
+    // Left door set - game speed
+    room.add_event(new SettingsDoor(-1,2,200,-1,-1,function() { 
+        // oquonie.dialog.show("ramen",["guide","correct","teleport"]);
+        oquonie.set_speed(Math.floor(oquonie.speed / 1.5));
+    }))
+    room.add_event(new SettingsDoor(-1,-2,200,-1,1,function() { 
+        // oquonie.dialog.show("ramen",["guide","incorrect","teleport"]);
+        oquonie.set_speed(Math.floor(oquonie.speed * 1.5));
+    }))
+    this.rooms[200] = room
   }
 }
